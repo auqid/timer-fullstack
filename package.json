@@ -1,0 +1,24 @@
+{
+  "name": "timer-fullstack",
+  "version": "1.0.0",
+  "description": "Task and Time Tracking App",
+  "homepage": "https://github.com/auqid/timer-fullstack#readme",
+  "bugs": {
+    "url": "https://github.com/auqid/timer-fullstack/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auqid/timer-fullstack.git"
+  },
+  "license": "ISC",
+  "author": "auqid",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
