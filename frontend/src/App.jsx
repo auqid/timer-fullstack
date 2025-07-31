@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LoginPage from "./components/Login/LoginPage";
 import SignupPage from "./components/Signup/SignupPage";
-// import DashboardPage from './components/Dashboard/DashboardPage';
+import DashboardPage from "./components/Dashboard/DashboardPage";
 import "./App.css"; // Global styles
 
 export default function App() {
