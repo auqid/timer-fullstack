@@ -262,7 +262,7 @@
 
 @media (max-width: 480px) {
   .createTaskButton {
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     font-size: 1rem;
   }
 

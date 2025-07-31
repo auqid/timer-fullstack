@@ -115,7 +115,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
+  /* min-width: 120px; */
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
