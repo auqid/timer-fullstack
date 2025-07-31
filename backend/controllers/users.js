@@ -2,7 +2,7 @@ const loginRouter = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-
+const JWT_SECRET = require("../utils/config").JWT_SECRET;
 // @desc    Authenticate user & get token (Login)
 // @route   POST /api/login
 // @access  Public
@@ -32,7 +32,7 @@ loginRouter.post("/", async (request, response) => {
     };
 
     // Sign the token
-    const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+    const token = jwt.sign(userForToken, JWT_SECRET, {
       expiresIn: "1d",
     });
 

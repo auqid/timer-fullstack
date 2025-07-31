@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const logger = require("./logger");
+const JWT_SECRET = require("../utils/config").JWT_SECRET;
 
 const requestLogger = (request, response, next) => {
   logger.info("Method:", request.method);
@@ -38,7 +39,7 @@ const protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
 
       // Verify the token using the secret key
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, JWT_SECRET);
 
       // Find the user by the ID from the token's payload
       // .select('-password') ensures the user's password hash is not attached to the request object
