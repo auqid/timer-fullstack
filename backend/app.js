@@ -28,8 +28,9 @@ const corsOptions = {
     const allowedOrigins = [
       "http://localhost:5173",
       "http://localhost:3000",
+      "https://frontend-production-85ff.up.railway.app",
+      "https://backend-production-9b60.up.railway.app",
       config.FRONTEND_URL,
-      "https://your-app-name.vercel.app",
     ];
 
     if (allowedOrigins.indexOf(origin) !== -1) {
