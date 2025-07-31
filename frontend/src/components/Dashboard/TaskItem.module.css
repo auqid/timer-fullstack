@@ -1,80 +1,97 @@
 .item {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+  border-radius: 1rem 1rem 0 0;
 }
 
 .item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .details {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .title {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
 }
 
 .description {
-  color: #6b7280;
+  color: #718096;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 .controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .timerInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-}
-
-.duration {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0;
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
 }
 
-.runningIndicator {
-  color: #ef4444;
-  font-size: 0.875rem;
-  animation: pulse 1s infinite;
+.duration {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
 }
 
-@keyframes pulse {
+.runningIndicator {
+  color: #ff6b6b;
+  font-size: 1rem;
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
   0%,
   100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
     opacity: 0.5;
+    transform: scale(1.2);
   }
 }
 
 .status {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   display: inline-block;
@@ -83,22 +100,24 @@
 
 .buttonGroup {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   align-items: center;
 }
 
 .button {
-  padding: 0.625rem 1.25rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
+  min-width: 120px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .button:disabled {
@@ -108,329 +127,278 @@
 }
 
 .startButton {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
   color: white;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
 }
 
 .startButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669, #047857);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, #44a08d, #3d8b7d);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
 }
 
 .stopButton {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
   color: white;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
 .stopButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, #ff5252, #f44336);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
 .moreButton {
-  background: #f8fafc;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-  padding: 0.625rem;
-  border-radius: 0.5rem;
-  width: 40px;
-  height: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #4a5568;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  backdrop-filter: blur(10px);
 }
 
 .moreButton:hover:not(:disabled) {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .actionMenu {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #f1f5f9;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
-/* Status Buttons - Redesigned */
+/* Status Buttons - Pomofocus Style */
 .statusButtons {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .statusButton {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border: 2px solid transparent;
-  background: #f8fafc;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: #64748b;
-  position: relative;
-  overflow: hidden;
-}
-
-.statusButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.statusButton:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s;
-}
-
-.statusButton:hover:before {
-  left: 100%;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
 }
 
 .statusButton[data-status="Pending"] {
-  background: #fef3c7;
-  color: #d97706;
-  border-color: #fbbf24;
+  background: rgba(255, 193, 7, 0.2);
+  color: #f57c00;
+  border-color: rgba(255, 193, 7, 0.3);
 }
 
 .statusButton[data-status="Pending"].active {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #ffc107, #f57c00);
   color: white;
-  border-color: #d97706;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
 }
 
 .statusButton[data-status="In Progress"] {
-  background: #dbeafe;
-  color: #2563eb;
-  border-color: #60a5fa;
+  background: rgba(33, 150, 243, 0.2);
+  color: #1976d2;
+  border-color: rgba(33, 150, 243, 0.3);
 }
 
 .statusButton[data-status="In Progress"].active {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #2196f3, #1976d2);
   color: white;
-  border-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
 }
 
 .statusButton[data-status="Completed"] {
-  background: #dcfce7;
-  color: #16a34a;
-  border-color: #4ade80;
+  background: rgba(76, 175, 80, 0.2);
+  color: #388e3c;
+  border-color: rgba(76, 175, 80, 0.3);
 }
 
 .statusButton[data-status="Completed"].active {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: linear-gradient(135deg, #4caf50, #388e3c);
   color: white;
-  border-color: #16a34a;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-}
-.statusButton[data-status="Completed"]:has-text("& Stop") {
-  background: linear-gradient(135deg, #f59e0b, #16a34a);
-  animation: pulse-complete 2s infinite;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
-@keyframes pulse-complete {
-  0%,
-  100% {
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
-  }
+.statusButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-/* Action Buttons - Redesigned */
+
+/* Action Buttons */
 .actionButtons {
   display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .editButton {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: linear-gradient(135deg, #9c27b0, #673ab7);
   color: white;
-  padding: 0.625rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.editButton:before {
-  content: "✏️";
-  font-size: 0.75rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
 }
 
 .editButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4f46e5, #4338ca);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+  background: linear-gradient(135deg, #8e24aa, #5e35b1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
 }
 
 .deleteButton {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #f44336, #d32f2f);
   color: white;
-  padding: 0.625rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.deleteButton:before {
-  content: "🗑️";
-  font-size: 0.75rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
 }
 
 .deleteButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, #d32f2f, #c62828);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
 }
 
-/* Edit Form Styles */
+/* Edit Form */
 .editForm {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  background: #f8fafc;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  border: 1px solid #e2e8f0;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .editInput,
 .editTextarea,
 .editSelect {
-  padding: 0.75rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
   font-size: 1rem;
-  transition: all 0.2s ease;
-  background: white;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
 }
 
 .editInput:focus,
 .editTextarea:focus,
 .editSelect:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .editTextarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px;
   font-family: inherit;
 }
 
 .editActions {
   display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .saveButton {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #4caf50, #388e3c);
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 .saveButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669, #047857);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, #388e3c, #2e7d32);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
 .cancelButton {
-  background: #64748b;
+  background: rgba(108, 117, 125, 0.8);
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
 }
 
 .cancelButton:hover:not(:disabled) {
-  background: #475569;
-  transform: translateY(-1px);
+  background: rgba(108, 117, 125, 0.9);
+  transform: translateY(-2px);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .controls {
     flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .buttonGroup {
-    justify-content: space-between;
-  }
-
-  .statusButtons {
     justify-content: center;
   }
 
+  .duration {
+    font-size: 1.5rem;
+    justify-content: center;
+  }
+
+  .statusButtons,
   .actionButtons {
     justify-content: center;
   }
 
   .editActions {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .item {
-    padding: 1rem;
-  }
-
-  .statusButtons {
-    flex-direction: column;
-  }
-
-  .actionButtons {
     flex-direction: column;
   }
 }
