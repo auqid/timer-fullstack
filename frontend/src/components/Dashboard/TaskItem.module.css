@@ -401,4 +401,7 @@
   .editActions {
     flex-direction: column;
   }
+  .title {
+    font-size: 1.25rem;
+  }
 }
