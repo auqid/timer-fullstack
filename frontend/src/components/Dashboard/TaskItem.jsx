@@ -78,8 +78,21 @@ export default function TaskItem({ task, onTaskUpdate }) {
   };
 
   const handleStatusChange = async (newStatus) => {
+    // Show confirmation if completing a task with running timer
+    if (newStatus === "Completed" && isTimerRunning) {
+      const confirmed = window.confirm(
+        "This will stop the running timer and mark the task as completed. Continue?"
+      );
+      if (!confirmed) return;
+    }
+
     setIsLoading(true);
     try {
+      // If marking as completed and timer is running, stop the timer first
+      if (newStatus === "Completed" && isTimerRunning) {
+        await stopTimer(task._id);
+      }
+
       await updateTask(task._id, { status: newStatus });
       await onTaskUpdate();
       setShowActions(false);
@@ -248,27 +261,35 @@ export default function TaskItem({ task, onTaskUpdate }) {
               className={`${styles.statusButton} ${
                 task.status === "Pending" ? styles.active : ""
               }`}
+              data-status="Pending"
               disabled={isLoading}
             >
-              Pending
+              📋 Pending
             </button>
             <button
               onClick={() => handleStatusChange("In Progress")}
               className={`${styles.statusButton} ${
                 task.status === "In Progress" ? styles.active : ""
               }`}
+              data-status="In Progress"
               disabled={isLoading}
             >
-              In Progress
+              ⚡ In Progress
             </button>
             <button
               onClick={() => handleStatusChange("Completed")}
               className={`${styles.statusButton} ${
                 task.status === "Completed" ? styles.active : ""
               }`}
+              data-status="Completed"
               disabled={isLoading}
+              title={
+                isTimerRunning
+                  ? "Complete task and stop timer"
+                  : "Mark as completed"
+              }
             >
-              Completed
+              ✅ Completed{isTimerRunning && " & Stop"}
             </button>
           </div>
           <div className={styles.actionButtons}>
