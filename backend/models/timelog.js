@@ -22,7 +22,7 @@ const timeLogSchema = new Schema(
       default: null,
     },
     duration: {
-      type: Number, // Storing duration in seconds
+      type: Number,
       default: 0,
     },
   },
