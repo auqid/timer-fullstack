@@ -17,3 +17,21 @@ export const createTask = async (taskData) => {
     throw new Error(error.response?.data?.error || "Failed to create task");
   }
 };
+
+export const updateTask = async (taskId, updateData) => {
+  try {
+    const response = await api.put(`/tasks/${taskId}`, updateData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Failed to update task");
+  }
+};
+
+export const deleteTask = async (taskId) => {
+  try {
+    const response = await api.delete(`/tasks/${taskId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Failed to delete task");
+  }
+};

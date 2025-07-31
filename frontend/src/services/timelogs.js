@@ -17,3 +17,12 @@ export const stopTimer = async (taskId) => {
     throw new Error(error.response?.data?.error || "Failed to stop timer");
   }
 };
+
+export const getTodaySummary = async () => {
+  try {
+    const response = await api.get("/timelogs/summary/today");
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Failed to fetch summary");
+  }
+};

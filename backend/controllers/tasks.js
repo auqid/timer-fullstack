@@ -13,10 +13,9 @@ tasksRouter
   .route("/")
   .get(async (req, res) => {
     try {
-      const tasks = await Task.find({ user: req.user.id }).populate(
-        "timeLogs",
-        "duration"
-      );
+      // Populate ALL timelog fields for timer functionality
+      const tasks = await Task.find({ user: req.user.id }).populate("timeLogs");
+      console.log("Tasks with timeLogs:", JSON.stringify(tasks, null, 2)); // Debug
       res.status(200).json(tasks);
     } catch (error) {
       res.status(500).json({ error: "Server Error", details: error.message });
@@ -24,21 +23,16 @@ tasksRouter
   })
   .post(async (req, res) => {
     try {
-      const { userInput, title, description } = req.body;
-      if (!userInput && !title) {
-        return res
-          .status(400)
-          .json({ error: "Task input or title is required." });
-      }
+      const { title, description } = req.body;
 
-      const finalTitle = title || userInput;
-      const finalDescription = description || "";
+      if (!title || title.trim() === "") {
+        return res.status(400).json({ error: "Task title is required." });
+      }
 
       const task = await Task.create({
         user: req.user.id,
-        userInput: userInput || "",
-        title: finalTitle,
-        description: finalDescription,
+        title: title.trim(),
+        description: description?.trim() || "",
       });
 
       await User.findByIdAndUpdate(req.user.id, { $push: { tasks: task._id } });
@@ -61,9 +55,10 @@ tasksRouter
         return res.status(401).json({ error: "Not authorized" });
 
       const { title, description, status } = req.body;
-      task.title = title || task.title;
-      task.description = description || task.description;
-      task.status = status || task.status;
+
+      if (title !== undefined) task.title = title.trim();
+      if (description !== undefined) task.description = description.trim();
+      if (status !== undefined) task.status = status;
 
       const updatedTask = await task.save();
       res.status(200).json(updatedTask);

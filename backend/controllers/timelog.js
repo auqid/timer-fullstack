@@ -11,6 +11,11 @@ timeLogsRouter.use(protect);
 timeLogsRouter.post("/start", async (req, res) => {
   try {
     const { taskId } = req.body;
+
+    if (!taskId) {
+      return res.status(400).json({ error: "Task ID is required" });
+    }
+
     const task = await Task.findById(taskId);
     if (!task || task.user.toString() !== req.user.id) {
       return res
@@ -18,11 +23,31 @@ timeLogsRouter.post("/start", async (req, res) => {
         .json({ error: "Task not found or not authorized" });
     }
 
-    const existingLog = await TimeLog.findOne({ task: taskId, endTime: null });
-    if (existingLog) {
+    // Check if there's already a running timer for this task
+    const existingTimer = await TimeLog.findOne({
+      task: taskId,
+      user: req.user.id,
+      endTime: null,
+    });
+
+    if (existingTimer) {
       return res
         .status(400)
-        .json({ error: "Timer is already running for this task." });
+        .json({ error: "Timer is already running for this task" });
+    }
+
+    // Check if there's any running timer for this user
+    const anyRunningTimer = await TimeLog.findOne({
+      user: req.user.id,
+      endTime: null,
+    });
+
+    if (anyRunningTimer) {
+      return res
+        .status(400)
+        .json({
+          error: "Please stop the current timer before starting a new one",
+        });
     }
 
     const timeLog = await TimeLog.create({
@@ -31,9 +56,16 @@ timeLogsRouter.post("/start", async (req, res) => {
       startTime: new Date(),
     });
 
-    await Task.findByIdAndUpdate(taskId, { $push: { timeLogs: timeLog._id } });
+    // Add timelog to task's timeLogs array
+    await Task.findByIdAndUpdate(taskId, {
+      $push: { timeLogs: timeLog._id },
+      $set: { status: "In Progress" },
+    });
+
+    console.log("Timer started:", timeLog); // Debug log
     res.status(201).json(timeLog);
   } catch (error) {
+    console.error("Start timer error:", error);
     res.status(500).json({ error: "Server Error", details: error.message });
   }
 });
@@ -44,51 +76,72 @@ timeLogsRouter.post("/start", async (req, res) => {
 timeLogsRouter.post("/stop", async (req, res) => {
   try {
     const { taskId } = req.body;
+
+    if (!taskId) {
+      return res.status(400).json({ error: "Task ID is required" });
+    }
+
+    const task = await Task.findById(taskId);
+    if (!task || task.user.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ error: "Task not found or not authorized" });
+    }
+
     const timeLog = await TimeLog.findOne({
       task: taskId,
       user: req.user.id,
       endTime: null,
     });
+
     if (!timeLog) {
       return res
-        .status(404)
-        .json({ error: "No active timer found for this task." });
+        .status(400)
+        .json({ error: "No active timer found for this task" });
     }
 
     timeLog.endTime = new Date();
-    await timeLog.save(); // pre-save hook calculates duration
+    await timeLog.save(); // This will trigger the pre-save hook to calculate duration
 
-    await Task.findOneAndUpdate(
-      { _id: taskId, status: "Pending" },
-      { status: "In Progress" }
-    );
+    console.log("Timer stopped:", timeLog); // Debug log
     res.status(200).json(timeLog);
   } catch (error) {
+    console.error("Stop timer error:", error);
     res.status(500).json({ error: "Server Error", details: error.message });
   }
 });
 
-// @desc    Get daily summary
+// @desc    Get today's summary
 // @route   GET /api/timelogs/summary/today
 // @access  Private
 timeLogsRouter.get("/summary/today", async (req, res) => {
   try {
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const todaysLogs = await TimeLog.find({
+    const timeLogs = await TimeLog.find({
       user: req.user.id,
-      startTime: { $gte: startOfToday, $lte: endOfToday },
+      startTime: { $gte: today, $lt: tomorrow },
+      endTime: { $ne: null },
     }).populate("task", "title");
 
-    const totalTime = todaysLogs.reduce(
+    const totalDuration = timeLogs.reduce(
       (acc, log) => acc + (log.duration || 0),
       0
     );
-    res.status(200).json({ totalTimeTracked: totalTime, logs: todaysLogs });
+    const tasksWorkedOn = [
+      ...new Set(timeLogs.map((log) => log.task._id.toString())),
+    ].length;
+
+    res.status(200).json({
+      totalDuration,
+      tasksWorkedOn,
+      timeLogs,
+    });
   } catch (error) {
+    console.error("Summary error:", error);
     res.status(500).json({ error: "Server Error", details: error.message });
   }
 });
