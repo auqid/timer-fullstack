@@ -2,10 +2,27 @@
 
 A modern, feature-rich task and time tracking application built with React, Node.js, and MongoDB. Track your productivity with an elegant Pomofocus-inspired interface.
 
+## 🔑 Test Credentials
+
+For easier review and testing, you can use these demo credentials:
+
+**Demo Account:**
+
+- **Username:** `auqidirfan100@gmail.com`
+- **Password:** `auqid`
+
+_Or feel free to create your own account using the signup feature._
+
 ## 🌐 Live Demo
 
 - **Frontend:** https://frontend-production-85ff.up.railway.app
 - **Backend API:** https://backend-production-9b60.up.railway.app
+
+## ✅ Requirements Checklist
+
+- ✅ **Live demo link** - Both frontend and backend URLs provided
+- ✅ **Working authentication** - JWT-based login/signup system
+- ✅ **Test credentials** - Demo account for easy review
 
 ## ✨ Features
 
