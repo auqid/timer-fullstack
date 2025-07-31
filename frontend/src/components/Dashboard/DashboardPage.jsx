@@ -7,7 +7,7 @@ import Header from "./Header";
 import TaskList from "./TaskList";
 import styles from "./DashboardPage.module.css";
 
-export default function DashboardPage({ user, handleLogout }) {
+export default function DashboardPage({ user, handleLogout, setPage }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -56,7 +56,7 @@ export default function DashboardPage({ user, handleLogout }) {
 
   return (
     <div>
-      <Header user={user} handleLogout={handleLogout} />
+      <Header user={user} handleLogout={handleLogout} setPage={setPage} />
       <main className={styles.main}>
         {/* Task Creation Section */}
         <div className={styles.createTaskSection}>

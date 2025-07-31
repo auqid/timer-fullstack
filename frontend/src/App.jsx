@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoginPage from "./components/Login/LoginPage";
 import SignupPage from "./components/Signup/SignupPage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
+import SummaryPage from "./components/Summary/SummaryPage";
 import "./App.css"; // Global styles
 
 export default function App() {
@@ -11,9 +12,18 @@ export default function App() {
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
     const storedUser = localStorage.getItem("authUser");
+
     if (storedToken && storedUser) {
-      setUser(JSON.parse(storedUser));
-      setPage("dashboard");
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setPage("dashboard");
+      } catch (error) {
+        console.error("Error parsing stored user data:", error);
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("authUser");
+        setPage("login");
+      }
     }
   }, []);
 
@@ -36,7 +46,21 @@ export default function App() {
       case "signup":
         return <SignupPage setPage={setPage} />;
       case "dashboard":
-        return <DashboardPage user={user} handleLogout={handleLogout} />;
+        return (
+          <DashboardPage
+            user={user}
+            handleLogout={handleLogout}
+            setPage={setPage}
+          />
+        );
+      case "summary":
+        return (
+          <SummaryPage
+            user={user}
+            handleLogout={handleLogout}
+            setPage={setPage}
+          />
+        );
       case "login":
       default:
         return (
